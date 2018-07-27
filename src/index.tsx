@@ -1,21 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { observable, action } from 'mobx';
+import { Provider } from 'mobx-react';
 
-import App from './App';
 import './index.css';
 
-const appState: any = observable({ timer: 0 });
+import App from './App';
+import Store from './Store';
 
-appState.resetTimer = action(function reset() {
-  appState.timer = 0;
-});
+const data = new Store();
 
-setInterval(
-  action(function tick() {
-    appState.timer += 1;
-  }),
-  1000
+ReactDOM.render(
+  <Provider data={data}>
+    <App />
+  </Provider>,
+  document.getElementById('root')
 );
-
-ReactDOM.render(<App appState={appState} />, document.getElementById('root'));
