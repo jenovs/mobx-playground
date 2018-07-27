@@ -1,24 +1,52 @@
 import React, { Component } from 'react';
-import { computed } from 'mobx';
+import { observable } from 'mobx';
+import { observer, inject } from 'mobx-react';
+import Devtools from 'mobx-react-devtools';
 
-import { observer } from 'mobx-react';
+import Card from './Card';
 
+@inject('data')
 @observer
 class App extends Component<any, any> {
-  @computed
-  get string() {
-    return `Passed ${this.props.appState.timer} seconds`;
+  @observable val1 = '';
+  @observable val2 = '';
+
+  componentDidMount() {
+    this.props.data.getPrices();
   }
 
-  handleReset = () => {
-    this.props.appState.resetTimer();
+  handleSubmit = (e: any) => {
+    e.preventDefault();
+
+    const { fetchData } = this.props.data;
+
+    fetchData(this.val1, this.val2);
+
+    // clear inputs
+    e.target.reset();
   };
 
   render() {
+    const { priceData } = this.props.data;
+
     return (
-      <div>
-        <button onClick={this.handleReset}>Reset</button>
-        <div>{this.string}</div>
+      <div style={{ margin: 'auto', maxWidth: '768px' }}>
+        <div>
+          <Devtools />
+          {priceData.map((pair: any) => (
+            <Card key={`${pair.from}${pair.to}`} {...pair} />
+          ))}
+        </div>
+        <div>
+          <form
+            onSubmit={this.handleSubmit}
+            style={{ margin: 'auto', maxWidth: '500px' }}
+          >
+            <input type="text" onChange={e => (this.val1 = e.target.value)} />
+            <input type="text" onChange={e => (this.val2 = e.target.value)} />
+            <button type="submit">Get Price</button>
+          </form>
+        </div>
       </div>
     );
   }
