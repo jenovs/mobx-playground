@@ -61,6 +61,15 @@ class AppState {
     });
   };
 
+  @action
+  deletePair = (id: number) => {
+    const idx = this.pairs.findIndex(pair => pair.id === id);
+    if (idx === -1) {
+      return;
+    }
+    this.pairs.splice(idx, 1);
+  };
+
   fetchData = (from: string, to: string) => {
     const { addPair, getPrices, hasPair } = this;
 

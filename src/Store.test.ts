@@ -88,4 +88,25 @@ describe('Store', () => {
     expect(store.hasPair('ROO', 'BAR')).toBeFalsy();
     expect(store.hasPair('FOO', 'BAR')).toBeTruthy();
   });
+
+  it('deletes a pair by `id`', () => {
+    store.pairs = store.pairs = [
+      { id: 0, from: 'CAR', to: 'ROT' },
+      { id: 1, from: 'BER', to: 'LIN' },
+      { id: 2, from: 'LEN', to: 'OVO' },
+    ];
+
+    store.deletePair(0);
+    expect(store.pairs.length).toBe(2);
+    expect(store.pairs[0].id).toBe(1);
+
+    store.deletePair(2);
+    expect(store.pairs.length).toBe(1);
+    expect(store.pairs[0].id).toBe(1);
+
+    // attempt to delete pair with non-existent id
+    store.deletePair(42);
+    expect(store.pairs.length).toBe(1);
+    expect(store.pairs[0].id).toBe(1);
+  });
 });
