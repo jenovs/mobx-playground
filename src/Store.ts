@@ -23,12 +23,16 @@ class AppState {
 
   @computed
   get fromAll() {
-    return this.pairs.map((pair: any) => pair.from).join(',');
+    return Array.from(new Set(this.pairs.map((pair: any) => pair.from))).join(
+      ','
+    );
   }
 
   @computed
   get toAll() {
-    return this.pairs.map((pair: any) => pair.to).join(',');
+    return Array.from(new Set(this.pairs.map((pair: any) => pair.to))).join(
+      ','
+    );
   }
 
   @computed
