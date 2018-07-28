@@ -1,5 +1,6 @@
 import React from 'react';
 import { observable } from 'mobx';
+import { Provider } from 'mobx-react';
 import { cleanup, fireEvent, render } from 'react-testing-library';
 import 'jest-dom/extend-expect';
 
@@ -13,6 +14,7 @@ describe('App component', () => {
 
     store = observable({
       addPair: jest.fn(),
+      deletePair: jest.fn(),
       fetchData: jest.fn(),
       getPrices: jest.fn(),
       priceData: [],
@@ -20,7 +22,11 @@ describe('App component', () => {
   });
 
   it('observes priceData changes', () => {
-    const { getAllByTestId, queryAllByTestId } = render(<App data={store} />);
+    const { getAllByTestId, queryAllByTestId } = render(
+      <Provider data={store}>
+        <App />
+      </Provider>
+    );
 
     expect(queryAllByTestId('card').length).toBe(0);
     store.priceData.push({ id: 1, from: 'FOO', to: 'BAR', price: 42 });
@@ -29,7 +35,11 @@ describe('App component', () => {
 
   it('displays initial list of priceData from store', () => {
     store.priceData = [{ id: 12, from: 'FOO', to: 'BAR', price: 42 }];
-    const { getAllByTestId, getByText } = render(<App data={store} />);
+    const { getAllByTestId, getByText } = render(
+      <Provider data={store}>
+        <App />
+      </Provider>
+    );
 
     expect(getAllByTestId('card').length).toBe(1);
 
@@ -54,5 +64,18 @@ describe('App component', () => {
     fireEvent.click(getByText('Get Price'));
 
     expect(store.fetchData).toHaveBeenCalledWith('BAZ', 'FUZ');
+  });
+
+  it('calls `deletePair` when `Delete` button is clicked', () => {
+    store.priceData = [{ id: 12, from: 'FOO', to: 'BAR', price: 42 }];
+    const { getAllByTestId, getByText } = render(
+      <Provider data={store}>
+        <App />
+      </Provider>
+    );
+
+    expect(getAllByTestId('card')).toHaveLength(1);
+    fireEvent.click(getByText('Delete'));
+    expect(store.deletePair).toBeCalledWith(12);
   });
 });
