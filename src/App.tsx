@@ -31,6 +31,7 @@ class App extends Component<any, any> {
 
     return (
       <div style={{ margin: 'auto', maxWidth: '768px' }}>
+        <div data-testid="cards">
           {/* <Devtools /> */}
           {priceData.map((pair: any) => (
             <Card key={`${pair.from}${pair.to}`} {...pair} />
@@ -41,8 +42,16 @@ class App extends Component<any, any> {
             onSubmit={this.handleSubmit}
             style={{ margin: 'auto', maxWidth: '500px' }}
           >
-            <input type="text" onChange={e => (this.val1 = e.target.value)} />
-            <input type="text" onChange={e => (this.val2 = e.target.value)} />
+            <input
+              type="text"
+              onChange={e => (this.val1 = e.target.value)}
+              data-testid="input-1"
+            />
+            <input
+              type="text"
+              onChange={e => (this.val2 = e.target.value)}
+              data-testid="input-2"
+            />
             <button type="submit">Get Price</button>
           </form>
         </div>

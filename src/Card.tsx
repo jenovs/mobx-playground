@@ -11,7 +11,7 @@ const style = {
 };
 
 const Card = observer(({ from, to, price }) => (
-  <div style={style.wrapper}>
+  <div style={style.wrapper} data-testid="card">
     <div>1 {from}</div>
     <div>
       {price || '...'} {to}
