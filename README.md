@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/jenovs/mobx-playground.svg?branch=master)](https://travis-ci.org/jenovs/mobx-playground)
+[![codecov](https://codecov.io/gh/jenovs/mobx-playground/branch/master/graph/badge.svg)](https://codecov.io/gh/jenovs/mobx-playground)
+
 ## Mobx-playground
 
 Simple app created to learn Mobx.
