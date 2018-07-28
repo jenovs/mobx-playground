@@ -8,12 +8,19 @@ configure({
 
 const REFRESH_TIMEOUT = 11000;
 
+interface IPairs {
+  id: number;
+  from: string;
+  to: string;
+  amount?: number;
+}
+
 class AppState {
   api: any;
   id = 2;
   @observable
-  pairs = [
-    { id: 0, from: 'BTC', to: 'EUR' },
+  pairs: IPairs[] = [
+    { id: 0, from: 'BTC', to: 'EUR', amount: 0.14287755 },
     { id: 1, from: 'LTC', to: 'EUR' },
   ];
   @observable prices = {};
