@@ -109,4 +109,19 @@ describe('Store', () => {
     expect(store.pairs.length).toBe(1);
     expect(store.pairs[0].id).toBe(1);
   });
+
+  it('adds amount', () => {
+    store.pairs = [
+      { id: 0, from: 'CAR', to: 'ROT' },
+      { id: 1, from: 'BER', to: 'LIN' },
+    ];
+
+    store.addAmount(1, 15);
+    expect(store.pairs[1].amount).toBe(15);
+
+    store.addAmount(2, 15);
+    expect(store.pairs).toHaveLength(2);
+    expect(store.pairs[0].amount).toBeUndefined();
+    expect(store.pairs[1].amount).toBe(15);
+  });
 });

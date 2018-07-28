@@ -60,6 +60,17 @@ class AppState {
   }
 
   @action
+  addAmount = (id: number, amount: number) => {
+    const idx = this.pairs.findIndex(pair => pair.id === id);
+
+    if (idx === -1) {
+      return;
+    }
+
+    this.pairs[idx].amount = amount;
+  };
+
+  @action
   addPair = (from: string, to: string) => {
     this.pairs.push({
       id: this.id++,
