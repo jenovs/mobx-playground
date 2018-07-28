@@ -1,5 +1,5 @@
 import React from 'react';
-import { observer } from 'mobx-react';
+import { inject, observer } from 'mobx-react';
 
 const style = {
   wrapper: {
@@ -10,13 +10,16 @@ const style = {
   },
 };
 
-const Card = observer(({ from, to, price }) => (
-  <div style={style.wrapper} data-testid="card">
-    <div>1 {from}</div>
-    <div>
-      {price || '...'} {to}
+const Card = inject('data')(
+  observer(({ data, id, from, to, price }) => (
+    <div style={style.wrapper} data-testid="card">
+      <div>1 {from}</div>
+      <div>
+        {price || '...'} {to}
+      </div>
+      <button onClick={() => data.deletePair(id)}>Delete</button>
     </div>
-  </div>
-));
+  ))
+);
 
 export default Card;
