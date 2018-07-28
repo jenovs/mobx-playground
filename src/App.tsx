@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { observable } from 'mobx';
 import { observer, inject } from 'mobx-react';
-import Devtools from 'mobx-react-devtools';
+// import Devtools from 'mobx-react-devtools';
 
 import Card from './Card';
 
@@ -31,8 +31,7 @@ class App extends Component<any, any> {
 
     return (
       <div style={{ margin: 'auto', maxWidth: '768px' }}>
-        <div>
-          <Devtools />
+          {/* <Devtools /> */}
           {priceData.map((pair: any) => (
             <Card key={`${pair.from}${pair.to}`} {...pair} />
           ))}
