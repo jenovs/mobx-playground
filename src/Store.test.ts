@@ -90,7 +90,7 @@ describe('Store', () => {
   });
 
   it('deletes a pair by `id`', () => {
-    store.pairs = store.pairs = [
+    store.pairs = [
       { id: 0, from: 'CAR', to: 'ROT' },
       { id: 1, from: 'BER', to: 'LIN' },
       { id: 2, from: 'LEN', to: 'OVO' },
