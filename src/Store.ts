@@ -10,7 +10,12 @@ const REFRESH_TIMEOUT = 11000;
 
 class AppState {
   api: any;
-  @observable pairs = [{ from: 'BTC', to: 'EUR' }, { from: 'LTC', to: 'EUR' }];
+  id = 2;
+  @observable
+  pairs = [
+    { id: 0, from: 'BTC', to: 'EUR' },
+    { id: 1, from: 'LTC', to: 'EUR' },
+  ];
   @observable prices = {};
   @observable timer = 0;
   refreshToken = setTimeout(() => {
@@ -50,6 +55,7 @@ class AppState {
   @action
   addPair = (from: string, to: string) => {
     this.pairs.push({
+      id: this.id++,
       from: from.trim().toUpperCase(),
       to: to.trim().toUpperCase(),
     });

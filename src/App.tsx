@@ -33,9 +33,7 @@ class App extends Component<any, any> {
       <div style={{ margin: 'auto', maxWidth: '768px' }}>
         <div data-testid="cards">
           {/* <Devtools /> */}
-          {priceData.map((pair: any) => (
-            <Card key={`${pair.from}${pair.to}`} {...pair} />
-          ))}
+          {priceData.map((pair: any) => <Card key={pair.id} {...pair} />)}
         </div>
         <div>
           <form

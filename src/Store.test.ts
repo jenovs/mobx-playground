@@ -34,10 +34,16 @@ describe('Store', () => {
   });
 
   it('adds new pair', () => {
+    store.id = 0;
     expect(store.pairs.length).toBe(0);
+
     store.addPair('foo', 'bar');
     expect(store.pairs.length).toBe(1);
-    expect(toJS(store.pairs[0])).toEqual({ from: 'FOO', to: 'BAR' });
+    expect(toJS(store.pairs[0])).toEqual({ id: 0, from: 'FOO', to: 'BAR' });
+
+    store.addPair('car', 'rot');
+    expect(store.pairs.length).toBe(2);
+    expect(toJS(store.pairs[1])).toEqual({ id: 1, from: 'CAR', to: 'ROT' });
   });
 
   it('fetches data with arguments', () => {

@@ -23,12 +23,12 @@ describe('App component', () => {
     const { getAllByTestId, queryAllByTestId } = render(<App data={store} />);
 
     expect(queryAllByTestId('card').length).toBe(0);
-    store.priceData.push([{ from: 'FOO', to: 'BAR', price: 42 }]);
+    store.priceData.push({ id: 1, from: 'FOO', to: 'BAR', price: 42 });
     expect(getAllByTestId('card').length).toBe(1);
   });
 
   it('displays initial list of priceData from store', () => {
-    store.priceData = [{ from: 'FOO', to: 'BAR', price: 42 }];
+    store.priceData = [{ id: 12, from: 'FOO', to: 'BAR', price: 42 }];
     const { getAllByTestId, getByText } = render(<App data={store} />);
 
     expect(getAllByTestId('card').length).toBe(1);
