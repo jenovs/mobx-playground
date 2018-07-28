@@ -3,11 +3,11 @@
 Simple app created to learn Mobx.
 
 It consumes [CryptoCompare API](https://www.cryptocompare.com/api) to show [Crypto]currency exchange rates (refreshed every 11 seconds).
-User can add currency pairs.
+User can add and delete currency pairs.
 
 It uses TypeScript, but only to be able to use decorators without ejecting create-react-app (types are mostly `any`).
 
-Tests inspired by [this pivotal blogpost](http://engineering.pivotal.io/post/tdd-mobx/).
+Tests inspired by [this Pivotal blogpost](http://engineering.pivotal.io/post/tdd-mobx/).
 
 ### Installation
 
