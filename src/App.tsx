@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { observable } from 'mobx';
 import { observer, inject } from 'mobx-react';
-// import Devtools from 'mobx-react-devtools';
+import Devtools from 'mobx-react-devtools';
 
 import Card from './Card';
+
+const isDevelopment = process.env.NODE_ENV === 'development';
 
 @inject('data')
 @observer
@@ -32,7 +34,7 @@ class App extends Component<any, any> {
     return (
       <div style={{ margin: 'auto', maxWidth: '768px' }}>
         <div data-testid="cards">
-          {/* <Devtools /> */}
+          {isDevelopment && <Devtools />}
           {priceData.map((pair: any) => <Card key={pair.id} {...pair} />)}
         </div>
         <div>
