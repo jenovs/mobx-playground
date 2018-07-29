@@ -14,6 +14,7 @@ describe('App component', () => {
 
     store = observable({
       addPair: jest.fn(),
+      amountById: jest.fn(),
       deletePair: jest.fn(),
       fetchData: jest.fn(),
       getPrices: jest.fn(),
