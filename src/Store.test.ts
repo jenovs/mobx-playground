@@ -132,5 +132,13 @@ describe('Store', () => {
     expect(store.pairs).toHaveLength(2);
     expect(store.pairs[0].amount).toBeUndefined();
     expect(store.pairs[1].amount).toBe(15);
+
+    store.addAmount(1, -1);
+    expect(store.pairs[1].amount).toBe(-1);
+
+    store.addAmount(1, 0);
+    expect(store.pairs[1].amount).toBe(0);
+  });
+
   });
 });
