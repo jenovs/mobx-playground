@@ -43,7 +43,7 @@ describe('Store', () => {
       id: 0,
       from: 'FOO',
       to: 'BAR',
-      amount: 1,
+      amount: '1',
     });
 
     store.addPair('car', 'rot');
@@ -52,8 +52,8 @@ describe('Store', () => {
       id: 1,
       from: 'CAR',
       to: 'ROT',
-      amount: 1,
-  });
+      amount: '1',
+    });
   });
 
   it('fetches data with arguments', () => {

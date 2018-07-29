@@ -21,7 +21,7 @@ class NumInput extends Component<IProps, {}> {
 
     this.inputVal = (e.target as HTMLInputElement).value;
 
-    data!.addAmount(id, this.inputVal === '' ? -1 : Number(this.inputVal));
+    data!.addAmount(id, !isNaN(Number(this.inputVal)) ? this.inputVal : '');
     this.amount = this.props.data!.amountById(this.props.id);
   };
 
@@ -30,8 +30,8 @@ class NumInput extends Component<IProps, {}> {
     e.preventDefault();
     const { data, id } = this.props;
 
-    if (this.amount <= 0) {
-      data!.addAmount(id, 1);
+    if (Number(this.amount) <= 0) {
+      data!.addAmount(id, '1');
     }
 
     this.amount = data!.amountById(id);
@@ -45,7 +45,6 @@ class NumInput extends Component<IProps, {}> {
 
   render() {
     const { amount, handleChange, handleSubmit, inputRef } = this;
-    const formatValue = (val: number) => (val === -1 ? '' : String(val));
 
     return (
       <form onSubmit={handleSubmit} noValidate={true}>
@@ -53,7 +52,7 @@ class NumInput extends Component<IProps, {}> {
           data-testid="num-input"
           ref={inputRef}
           type="number"
-          value={formatValue(amount)}
+          value={amount}
           onClick={e => (e.target as HTMLInputElement).select()}
           onChange={handleChange}
           onBlur={handleSubmit}

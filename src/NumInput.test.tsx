@@ -12,10 +12,10 @@ describe('NumInput component', () => {
   let renderFn: any;
 
   beforeEach(() => {
-    cache = { 2: 13, 5: 42 };
+    cache = { 2: '13', 5: '42' };
 
     store = observable({
-      addAmount: (id: number, amount: number) => {
+      addAmount: (id: number, amount: string) => {
         cache[id] = amount;
       },
       amountById: (id: number) => {
@@ -45,7 +45,7 @@ describe('NumInput component', () => {
 
     expect(inputField).toBeVisible();
     expect(inputField.value).toBe('13');
-    expect(cache).toEqual({ 2: 13, 5: 42 });
+    expect(cache).toEqual({ 2: '13', 5: '42' });
   });
 
   it('reacts to input 0', () => {
@@ -53,11 +53,11 @@ describe('NumInput component', () => {
 
     const inputField = getByTestId('num-input') as HTMLInputElement;
 
-    expect(cache).toEqual({ 2: 13, 5: 42 });
+    expect(cache).toEqual({ 2: '13', 5: '42' });
     inputField.value = '0';
     fireEvent.change(inputField);
     expect(inputField.value).toBe('0');
-    expect(cache).toEqual({ 2: 0, 5: 42 });
+    expect(cache).toEqual({ 2: '0', 5: '42' });
   });
 
   it('reacts to input 42', () => {
@@ -65,10 +65,10 @@ describe('NumInput component', () => {
 
     const inputField = getByTestId('num-input') as HTMLInputElement;
 
-    expect(cache).toEqual({ 2: 13, 5: 42 });
+    expect(cache).toEqual({ 2: '13', 5: '42' });
     inputField.value = '88';
     fireEvent.change(inputField);
-    expect(cache).toEqual({ 2: 13, 5: 88 });
+    expect(cache).toEqual({ 2: '13', 5: '88' });
     expect(inputField.value).toBe('88');
   });
 
@@ -77,10 +77,10 @@ describe('NumInput component', () => {
 
     const inputField = getByTestId('num-input') as HTMLInputElement;
 
-    expect(cache).toEqual({ 2: 13, 5: 42 });
+    expect(cache).toEqual({ 2: '13', 5: '42' });
     inputField.value = 'abc';
     fireEvent.change(inputField);
-    expect(cache).toEqual({ 2: -1, 5: 42 });
+    expect(cache).toEqual({ 2: '', 5: '42' });
 
     expect(inputField.value).toBe('');
   });
@@ -90,11 +90,11 @@ describe('NumInput component', () => {
 
     const inputField = getByTestId('num-input') as HTMLInputElement;
 
-    expect(cache).toEqual({ 2: 13, 5: 42 });
+    expect(cache).toEqual({ 2: '13', 5: '42' });
     inputField.value = 'abc';
     fireEvent.change(inputField);
     fireEvent.submit(inputField);
-    expect(cache).toEqual({ 2: 1, 5: 42 });
+    expect(cache).toEqual({ 2: '1', 5: '42' });
     expect(inputField.value).toBe('1');
   });
 
@@ -103,10 +103,23 @@ describe('NumInput component', () => {
 
     const inputField = getByTestId('num-input') as HTMLInputElement;
 
-    expect(cache).toEqual({ 2: 13, 5: 42 });
+    expect(cache).toEqual({ 2: '13', 5: '42' });
     inputField.value = '.12';
     fireEvent.change(inputField);
-    expect(cache).toEqual({ 2: 0.12, 5: 42 });
-    expect(inputField.value).toBe('0.12');
+    expect(cache).toEqual({ 2: '.12', 5: '42' });
+    expect(inputField.value).toBe('.12');
+  });
+
+  it('converts .01 to 0.01 on submit', () => {
+    const { getByTestId } = renderFn();
+
+    const inputField = getByTestId('num-input') as HTMLInputElement;
+
+    expect(cache).toEqual({ 2: '13', 5: '42' });
+    inputField.value = '.01';
+    fireEvent.change(inputField);
+    fireEvent.submit(inputField);
+    expect(cache).toEqual({ 2: '.01', 5: '42' });
+    expect(inputField.value).toBe('.01');
   });
 });

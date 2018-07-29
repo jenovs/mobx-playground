@@ -12,7 +12,7 @@ interface IPairs {
   id: number;
   from: string;
   to: string;
-  amount: number;
+  amount: string;
 }
 
 class AppState {
@@ -20,8 +20,9 @@ class AppState {
   id = 2;
   @observable
   pairs: IPairs[] = [
-    { id: 0, from: 'BTC', to: 'EUR', amount: 0.14287755 },
-    { id: 1, from: 'LTC', to: 'EUR' },
+    { id: 0, from: 'BTC', to: 'EUR', amount: '5.236' },
+    { id: 1, from: 'LTC', to: 'EUR', amount: '66.98523' },
+    { id: 42, from: 'ETH', to: 'USD', amount: '1' },
   ];
   @observable prices = {};
   refreshToken = setTimeout(() => {
@@ -69,7 +70,7 @@ class AppState {
   }
 
   @action
-  addAmount = (id: number, amount: number) => {
+  addAmount = (id: number, amount: string) => {
     const idx = this.pairs.findIndex(pair => pair.id === id);
 
     if (idx === -1) {
@@ -85,7 +86,7 @@ class AppState {
       id: this.id++,
       from: from.trim().toUpperCase(),
       to: to.trim().toUpperCase(),
-      amount: 1,
+      amount: '1',
     });
   };
 
