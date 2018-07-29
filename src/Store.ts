@@ -63,7 +63,7 @@ class AppState {
     const pair = this.pairs.find(p => p.id === id);
 
     if (!pair || pair.amount === undefined) {
-      return;
+      return -1;
     }
 
     return pair.amount;

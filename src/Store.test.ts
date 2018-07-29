@@ -154,6 +154,6 @@ describe('Store', () => {
     // amount is not set
     expect(store.amountById(4)).toBe(-1);
     // id doesn't exist
-    expect(store.amountById(12)).toBeUndefined();
+    expect(store.amountById(12)).toBe(-1);
   });
 });
