@@ -12,7 +12,7 @@ interface IPairs {
   id: number;
   from: string;
   to: string;
-  amount?: number;
+  amount: number;
 }
 
 class AppState {
@@ -76,6 +76,7 @@ class AppState {
       id: this.id++,
       from: from.trim().toUpperCase(),
       to: to.trim().toUpperCase(),
+      amount: 1,
     });
   };
 
