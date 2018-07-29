@@ -24,7 +24,6 @@ class AppState {
     { id: 1, from: 'LTC', to: 'EUR' },
   ];
   @observable prices = {};
-  @observable timer = 0;
   refreshToken = setTimeout(() => {
     this.getPrices();
   }, REFRESH_TIMEOUT);

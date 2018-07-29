@@ -54,6 +54,7 @@ describe('Store', () => {
       to: 'ROT',
       amount: 1,
   });
+  });
 
   it('fetches data with arguments', () => {
     store.api.getPrices = jest.fn(() => new Promise(r => r()));
