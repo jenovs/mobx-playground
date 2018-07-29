@@ -140,5 +140,20 @@ describe('Store', () => {
     expect(store.pairs[1].amount).toBe(0);
   });
 
+  it('returns amount', () => {
+    store.pairs = [
+      { id: 0, from: 'CAR', to: 'ROT', amount: 42 },
+      { id: 1, from: 'BER', to: 'LIN', amount: 0 },
+      { id: 4, from: 'POR', to: 'TAL', amount: -1 },
+    ];
+
+    // amount exists
+    expect(store.amountById(0)).toBe(42);
+    // amount is zero
+    expect(store.amountById(1)).toBe(0);
+    // amount is not set
+    expect(store.amountById(4)).toBe(-1);
+    // id doesn't exist
+    expect(store.amountById(12)).toBeUndefined();
   });
 });

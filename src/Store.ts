@@ -59,6 +59,16 @@ class AppState {
     });
   }
 
+  amountById(id: number | string) {
+    const pair = this.pairs.find(p => p.id === id);
+
+    if (!pair || pair.amount === undefined) {
+      return;
+    }
+
+    return pair.amount;
+  }
+
   @action
   addAmount = (id: number, amount: number) => {
     const idx = this.pairs.findIndex(pair => pair.id === id);
