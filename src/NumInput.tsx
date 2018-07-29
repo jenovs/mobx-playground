@@ -11,7 +11,7 @@ interface IProps {
 @inject('data')
 @observer
 class NumInput extends Component<IProps, {}> {
-  @observable inputVal = String(this.props.data!.amountById(this.props.id));
+  @observable inputVal = this.props.data!.amountById(this.props.id);
   @observable amount = this.props.data!.amountById(this.props.id);
   inputRef: React.RefObject<HTMLInputElement> = createRef();
 
