@@ -8,7 +8,7 @@ configure({
 
 const REFRESH_TIMEOUT = 11000;
 
-interface IPairs {
+export interface IPairs {
   id: number;
   from: string;
   to: string;
@@ -59,11 +59,11 @@ class AppState {
     });
   }
 
-  amountById(id: number | string) {
+  amountById(id: number | string): string {
     const pair = this.pairs.find(p => p.id === id);
 
     if (!pair || pair.amount === undefined) {
-      return -1;
+      return '';
     }
 
     return pair.amount;

@@ -1,6 +1,6 @@
 import { observe, toJS } from 'mobx';
 
-import Store from './Store';
+import Store, { IPairs } from './Store';
 
 class MockApi {
   baseUrl: '';
@@ -15,11 +15,17 @@ class MockApi {
   }
 }
 
+const pairs: IPairs[] = [
+  { id: 0, from: 'CAR', to: 'ROT', amount: '42' },
+  { id: 1, from: 'BER', to: 'LIN', amount: '0' },
+  { id: 4, from: 'POR', to: 'TAL', amount: '' },
+];
+
 describe('Store', () => {
   let store: any;
   beforeEach(() => {
     store = new Store(new MockApi());
-    store.pairs = [];
+    store.pairs = pairs;
   });
 
   it('observes store values', () => {
@@ -35,11 +41,11 @@ describe('Store', () => {
 
   it('adds new pair', () => {
     store.id = 0;
-    expect(store.pairs.length).toBe(0);
+    expect(store.pairs.length).toBe(3);
 
     store.addPair('foo', 'bar');
-    expect(store.pairs.length).toBe(1);
-    expect(toJS(store.pairs[0])).toEqual({
+    expect(store.pairs.length).toBe(4);
+    expect(toJS(store.pairs[3])).toEqual({
       id: 0,
       from: 'FOO',
       to: 'BAR',
@@ -47,8 +53,8 @@ describe('Store', () => {
     });
 
     store.addPair('car', 'rot');
-    expect(store.pairs.length).toBe(2);
-    expect(toJS(store.pairs[1])).toEqual({
+    expect(store.pairs.length).toBe(5);
+    expect(toJS(store.pairs[4])).toEqual({
       id: 1,
       from: 'CAR',
       to: 'ROT',
@@ -60,27 +66,18 @@ describe('Store', () => {
     store.api.getPrices = jest.fn(() => new Promise(r => r()));
 
     store.fetchData('FOO', 'BAR');
-    expect(store.api.getPrices).toBeCalledWith('FOO', 'BAR');
+    expect(store.api.getPrices).toBeCalledWith(
+      'CAR,BER,POR,FOO',
+      'ROT,LIN,TAL,BAR'
+    );
   });
 
   it('returns string of unique `from` values', () => {
-    store.pairs = [
-      { from: 'FOO', to: 'BAR' },
-      { from: 'LOO', to: 'BAM' },
-      { from: 'FOO', to: 'BAZ' },
-    ];
-
-    expect(store.fromAll).toBe('FOO,LOO');
+    expect(store.fromAll).toBe('CAR,BER,POR');
   });
 
   it('returns string of unique `to` values', () => {
-    store.pairs = [
-      { from: 'FOO', to: 'BAR' },
-      { from: 'LOO', to: 'BAM' },
-      { from: 'MOO', to: 'BAR' },
-    ];
-
-    expect(store.toAll).toBe('BAR,BAM');
+    expect(store.toAll).toBe('ROT,LIN,TAL');
   });
 
   it('returns correct price data', () => {
@@ -142,19 +139,15 @@ describe('Store', () => {
   });
 
   it('returns amount', () => {
-    store.pairs = [
-      { id: 0, from: 'CAR', to: 'ROT', amount: 42 },
-      { id: 1, from: 'BER', to: 'LIN', amount: 0 },
-      { id: 4, from: 'POR', to: 'TAL', amount: -1 },
-    ];
+    store.pairs = pairs;
 
     // amount exists
-    expect(store.amountById(0)).toBe(42);
+    expect(store.amountById(0)).toBe('42');
     // amount is zero
-    expect(store.amountById(1)).toBe(0);
+    expect(store.amountById(1)).toBe('0');
     // amount is not set
-    expect(store.amountById(4)).toBe(-1);
+    expect(store.amountById(4)).toBe('');
     // id doesn't exist
-    expect(store.amountById(12)).toBe(-1);
+    expect(store.amountById(12)).toBe('');
   });
 });
