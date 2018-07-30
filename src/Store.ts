@@ -109,6 +109,16 @@ class AppState {
     getPrices();
   };
 
+  checkSymbol = async (sym: string) => {
+    try {
+      const res = await this.api.getPrice(sym, sym);
+
+      return !!res[sym.toUpperCase()];
+    } catch (e) {
+      return false;
+    }
+  };
+
   getPrices = () => {
     clearTimeout(this.refreshToken);
 

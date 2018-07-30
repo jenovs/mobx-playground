@@ -7,6 +7,9 @@ class MockApi {
   getCoinlist() {
     return new Promise(r => r());
   }
+  getPrice(sym: string) {
+    return new Promise(r => r());
+  }
   getPrices(f: string, t: string) {
     return new Promise(r => r());
   }
