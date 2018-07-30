@@ -7,7 +7,17 @@ export default class Api {
     return fetch(`${baseUrl}all/coinlist`)
       .then(res => res.json())
       .then(this.checkError)
-      .then(json => json);
+      .then(json => json.Data);
+  }
+
+  getPrice(fsym: string, tsym: string) {
+    const { baseUrl } = this;
+
+    return fetch(
+      `${baseUrl}price?fsym=${fsym.toUpperCase()}&tsyms=${tsym.toUpperCase()}`
+    )
+      .then(res => res.json())
+      .then(this.checkError);
   }
 
   getPrices(fsyms: string, tsyms: string) {
