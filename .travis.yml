@@ -7,3 +7,10 @@ before_install:
   - npm install codecov -g
 after_success:
   - codecov
+before_deploy:
+  - npm run build
+deploy:
+  provider: pages
+  skip_cleanup: true
+  local_dir: build
+  github_token: $GITHUB_TOKEN

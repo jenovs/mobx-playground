@@ -25,5 +25,6 @@
     "jest-dom": "^1.11.0",
     "react-testing-library": "^4.1.5",
     "typescript": "^2.9.2"
-  }
+  },
+  "homepage": "http://jenovs.github.io/mobx-playground"
 }
