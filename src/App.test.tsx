@@ -15,8 +15,10 @@ describe('App component', () => {
     store = observable({
       addPair: jest.fn(),
       amountById: jest.fn(),
+      checkSymbol: () => new Promise(r => r(true)),
       deletePair: jest.fn(),
       fetchData: jest.fn(),
+      getCoinlist: jest.fn(),
       getPrices: jest.fn(),
       priceData: [],
     });
@@ -53,7 +55,7 @@ describe('App component', () => {
     expect(store.getPrices).toHaveBeenCalled();
   });
 
-  it('calls fetchData with args from inputs when submitting form', () => {
+  it('calls fetchData with args from inputs when submitting form', async () => {
     const { getByTestId, getByText } = render(<App data={store} />);
 
     const input1 = getByTestId('input-1') as HTMLInputElement;
@@ -63,8 +65,13 @@ describe('App component', () => {
     fireEvent.change(input1);
     fireEvent.change(input2);
     fireEvent.click(getByText('Get Price'));
-
-    expect(store.fetchData).toHaveBeenCalledWith('BAZ', 'FUZ');
+    // not sure about this
+    await new Promise(r =>
+      setTimeout(
+        () => r(expect(store.fetchData).toHaveBeenCalledWith('BAZ', 'FUZ')),
+        0
+      )
+    );
   });
 
   it('calls `deletePair` when `Delete` button is clicked', () => {

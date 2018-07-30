@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, createRef } from 'react';
 import { observable } from 'mobx';
 import { observer, inject } from 'mobx-react';
 import Devtools from 'mobx-react-devtools';
@@ -12,20 +12,46 @@ const isDevelopment = process.env.NODE_ENV === 'development';
 class App extends Component<any, any> {
   @observable val1 = '';
   @observable val2 = '';
+  ref1: React.RefObject<HTMLInputElement> = createRef();
+  ref2: React.RefObject<HTMLInputElement> = createRef();
 
   componentDidMount() {
     this.props.data.getPrices();
   }
 
-  handleSubmit = (e: any) => {
+  handleChange = (e: React.FormEvent) => {
+    const { name, value } = e.target as HTMLInputElement;
+
+    this[`val${name}`] = value;
+    this[`ref${name}`].current.style.borderColor = 'inherit';
+  };
+
+  handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const form = e.target as HTMLFormElement;
+    const { checkSymbol, fetchData } = this.props.data;
 
-    const { fetchData } = this.props.data;
+    const [input1valid, input2valid] = await Promise.all([
+      checkSymbol(this.val1),
+      checkSymbol(this.val2),
+    ]);
 
-    fetchData(this.val1, this.val2);
+    if (input1valid && input2valid) {
+      fetchData(this.val1, this.val2);
+      // clear inputs
+      form.reset();
+    } else {
+      if (!input2valid) {
+        this.ref2.current!.style.borderColor = 'red';
+        this.ref2.current!.focus();
+      }
+    }
+    if (!input1valid) {
+      this.ref1.current!.style.borderColor = 'red';
+    }
 
-    // clear inputs
-    e.target.reset();
+    // focus first input
+    this.ref1.current!.focus();
   };
 
   render() {
@@ -44,13 +70,17 @@ class App extends Component<any, any> {
           >
             <input
               type="text"
-              onChange={e => (this.val1 = e.target.value)}
+              name="1"
+              onChange={this.handleChange}
               data-testid="input-1"
+              ref={this.ref1}
             />
             <input
               type="text"
-              onChange={e => (this.val2 = e.target.value)}
+              name="2"
+              onChange={this.handleChange}
               data-testid="input-2"
+              ref={this.ref2}
             />
             <button type="submit">Get Price</button>
           </form>
