@@ -36,6 +36,8 @@ class App extends Component<any, any> {
       checkSymbol(this.val2),
     ]);
 
+    this.ref1.current!.focus();
+
     if (input1valid && input2valid) {
       fetchData(this.val1, this.val2);
       // clear inputs
@@ -48,10 +50,8 @@ class App extends Component<any, any> {
     }
     if (!input1valid) {
       this.ref1.current!.style.borderColor = 'red';
+      this.ref1.current!.focus();
     }
-
-    // focus first input
-    this.ref1.current!.focus();
   };
 
   render() {
