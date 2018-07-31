@@ -12,7 +12,7 @@ interface IProps {
 @observer
 class NumInput extends Component<IProps, {}> {
   @observable amount = this.props.data!.amountById(this.props.id);
-  @observable inputVal = '';
+  @observable inputVal = this.amount;
 
   @action
   handleChange = (e: FormEvent) => {
