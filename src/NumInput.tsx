@@ -1,4 +1,4 @@
-import React, { Component, FormEvent, createRef } from 'react';
+import React, { Component, FormEvent } from 'react';
 import { inject, observer } from 'mobx-react';
 import { observable, action } from 'mobx';
 import Store from './Store';
@@ -11,9 +11,8 @@ interface IProps {
 @inject('data')
 @observer
 class NumInput extends Component<IProps, {}> {
-  @observable inputVal = this.props.data!.amountById(this.props.id);
   @observable amount = this.props.data!.amountById(this.props.id);
-  inputRef: React.RefObject<HTMLInputElement> = createRef();
+  @observable inputVal = '';
 
   @action
   handleChange = (e: FormEvent) => {
@@ -22,40 +21,45 @@ class NumInput extends Component<IProps, {}> {
     this.inputVal = (e.target as HTMLInputElement).value;
 
     data!.addAmount(id, !isNaN(Number(this.inputVal)) ? this.inputVal : '');
-    this.amount = this.props.data!.amountById(this.props.id);
+    this.amount = data!.amountById(id);
+  };
+
+  handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    this.formatAmount();
+  };
+
+  handleBlur = () => {
+    this.formatAmount();
   };
 
   @action
-  handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
+  formatAmount = () => {
     const { data, id } = this.props;
 
     if (Number(this.amount) <= 0) {
       data!.addAmount(id, '1');
+    } else if (this.amount.charAt(0) === '.') {
+      data!.addAmount(id, `0${this.inputVal}`);
+    } else {
+      data!.addAmount(id, `${Number(this.inputVal)}`);
     }
 
     this.amount = data!.amountById(id);
-
-    if (this.inputVal.charAt(0) === '.') {
-      this.inputVal = `0${this.amount}`;
-    }
-
-    this.inputRef.current!.blur();
   };
 
   render() {
-    const { amount, handleChange, handleSubmit, inputRef } = this;
+    const { amount, handleBlur, handleChange, handleSubmit } = this;
 
     return (
       <form onSubmit={handleSubmit} noValidate={true}>
         <input
           data-testid="num-input"
-          ref={inputRef}
           type="number"
           value={amount}
           onClick={e => (e.target as HTMLInputElement).select()}
           onChange={handleChange}
-          onBlur={handleSubmit}
+          onBlur={handleBlur}
         />
       </form>
     );
