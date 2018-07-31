@@ -74,7 +74,6 @@ describe('NumInput component', () => {
 
   it('does not react to input `abc`', () => {
     const { getByTestId } = renderFn();
-
     const inputField = getByTestId('num-input') as HTMLInputElement;
 
     expect(cache).toEqual({ 2: '13', 5: '42' });
@@ -98,6 +97,19 @@ describe('NumInput component', () => {
     expect(inputField.value).toBe('1');
   });
 
+  it('sets invalid input on blur to 1', () => {
+    const { getByTestId } = renderFn();
+
+    const inputField = getByTestId('num-input') as HTMLInputElement;
+
+    expect(cache).toEqual({ 2: '13', 5: '42' });
+    inputField.value = 'abc';
+    fireEvent.change(inputField);
+    fireEvent.blur(inputField);
+    expect(cache).toEqual({ 2: '1', 5: '42' });
+    expect(inputField.value).toBe('1');
+  });
+
   it('converts .12 to 0.12', () => {
     const { getByTestId } = renderFn();
 
@@ -108,6 +120,8 @@ describe('NumInput component', () => {
     fireEvent.change(inputField);
     expect(cache).toEqual({ 2: '.12', 5: '42' });
     expect(inputField.value).toBe('.12');
+    fireEvent.submit(inputField);
+    expect(inputField.value).toBe('0.12');
   });
 
   it('converts .01 to 0.01 on submit', () => {
@@ -119,7 +133,72 @@ describe('NumInput component', () => {
     inputField.value = '.01';
     fireEvent.change(inputField);
     fireEvent.submit(inputField);
-    expect(cache).toEqual({ 2: '.01', 5: '42' });
-    expect(inputField.value).toBe('.01');
+    expect(cache).toEqual({ 2: '0.01', 5: '42' });
+    expect(inputField.value).toBe('0.01');
+  });
+
+  it('converts .01 to 0.01 on blur', () => {
+    const { getByTestId } = renderFn({ id: 5 });
+
+    const inputField = getByTestId('num-input') as HTMLInputElement;
+
+    expect(cache).toEqual({ 2: '13', 5: '42' });
+    inputField.value = '.01';
+    fireEvent.change(inputField);
+    fireEvent.blur(inputField);
+    expect(cache).toEqual({ 2: '13', 5: '0.01' });
+    expect(inputField.value).toBe('0.01');
+  });
+
+  it('converts .00 to 1 on blur', () => {
+    const { getByTestId } = renderFn({ id: 5 });
+
+    const inputField = getByTestId('num-input') as HTMLInputElement;
+
+    expect(cache).toEqual({ 2: '13', 5: '42' });
+    inputField.value = '.00';
+    fireEvent.change(inputField);
+    fireEvent.blur(inputField);
+    expect(cache).toEqual({ 2: '13', 5: '1' });
+    expect(inputField.value).toBe('1');
+  });
+
+  it('converts 0.00 to 1 on blur', () => {
+    const { getByTestId } = renderFn({ id: 5 });
+
+    const inputField = getByTestId('num-input') as HTMLInputElement;
+
+    expect(cache).toEqual({ 2: '13', 5: '42' });
+    inputField.value = '0.00';
+    fireEvent.change(inputField);
+    fireEvent.blur(inputField);
+    expect(cache).toEqual({ 2: '13', 5: '1' });
+    expect(inputField.value).toBe('1');
+  });
+
+  it('converts 2.0 to 2 on blur', () => {
+    const { getByTestId } = renderFn({ id: 5 });
+
+    const inputField = getByTestId('num-input') as HTMLInputElement;
+
+    expect(cache).toEqual({ 2: '13', 5: '42' });
+    inputField.value = '2.0';
+    fireEvent.change(inputField);
+    fireEvent.blur(inputField);
+    expect(cache).toEqual({ 2: '13', 5: '2' });
+    expect(inputField.value).toBe('2');
+  });
+
+  it('doesn not change 0.01 on blur', () => {
+    const { getByTestId } = renderFn({ id: 5 });
+
+    const inputField = getByTestId('num-input') as HTMLInputElement;
+
+    expect(cache).toEqual({ 2: '13', 5: '42' });
+    inputField.value = '0.01';
+    fireEvent.change(inputField);
+    expect(cache).toEqual({ 2: '13', 5: '0.01' });
+    fireEvent.blur(inputField);
+    expect(inputField.value).toBe('0.01');
   });
 });
