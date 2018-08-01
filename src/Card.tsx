@@ -1,5 +1,6 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
+import { Draggable } from 'react-beautiful-dnd';
 
 import NumInput from './NumInput';
 
@@ -16,14 +17,22 @@ const style = {
 };
 
 const Card = inject('data')(
-  observer(({ amount, data, id, from, to, price }) => {
+  observer(({ amount, data, delta, id, index, from, to, price }) => {
     const total = price * (amount === undefined ? 1 : amount);
     const formatTotal = (t: number) => {
       return t >= 1 ? t.toFixed(2) : t > 0 ? t : '...';
     };
 
     return (
-      <div style={style.wrapper} data-testid="card">
+      <Draggable draggableId={`${id}`} index={index}>
+        {provided => (
+          <div
+            ref={provided.innerRef}
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+            data-testid="card"
+          >
+            <div style={style.wrapper}>
         <div style={style.numInput}>
           <NumInput id={id as number} /> {from}
         </div>
@@ -32,6 +41,9 @@ const Card = inject('data')(
         </div>
         <button onClick={() => data.deletePair(id)}>Delete</button>
       </div>
+          </div>
+        )}
+      </Draggable>
     );
   })
 );
