@@ -9,6 +9,7 @@ configure({
 const REFRESH_TIMEOUT = 11000;
 
 export interface IPairs {
+  delta?: number;
   id: number;
   from: string;
   to: string;
@@ -59,7 +60,7 @@ class AppState {
       return {
         ...pair,
         price,
-        delta: price - lastPrice,
+        delta: price - lastPrice || 0,
       };
     });
   }
