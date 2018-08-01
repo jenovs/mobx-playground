@@ -88,8 +88,19 @@ describe('Store', () => {
     store.prices = { FOO: { BAR: 42 }, LOO: { BAM: 99 } };
 
     expect(store.priceData).toEqual([
-      { from: 'FOO', price: 42, to: 'BAR' },
-      { from: 'LOO', price: 99, to: 'BAM' },
+      { delta: 0, from: 'FOO', price: 42, to: 'BAR' },
+      { delta: 0, from: 'LOO', price: 99, to: 'BAM' },
+    ]);
+  });
+
+  it('calculates correct delta', () => {
+    store.pairs = [{ from: 'FOO', to: 'BAR' }, { from: 'LOO', to: 'BAM' }];
+    store.prices = { FOO: { BAR: 42 }, LOO: { BAM: 99 } };
+    store.lastPrices = { FOO: { BAR: 44 }, LOO: { BAM: 88 } };
+
+    expect(store.priceData).toEqual([
+      { delta: -2, from: 'FOO', price: 42, to: 'BAR' },
+      { delta: 11, from: 'LOO', price: 99, to: 'BAM' },
     ]);
   });
 

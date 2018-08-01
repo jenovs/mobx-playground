@@ -25,6 +25,7 @@ class AppState {
     { id: 42, from: 'ETH', to: 'USD', amount: '1' },
   ];
   @observable prices = {};
+  @observable lastPrices = {};
   refreshToken = setTimeout(() => {
     this.getPrices();
   }, REFRESH_TIMEOUT);
@@ -49,12 +50,16 @@ class AppState {
 
   @computed
   get priceData() {
-    const { pairs, prices } = this;
+    const { lastPrices, pairs, prices } = this;
 
     return pairs.map(pair => {
+      const price = prices[pair.from] && prices[pair.from][pair.to];
+      const lastPrice =
+        (lastPrices[pair.from] && lastPrices[pair.from][pair.to]) || price;
       return {
         ...pair,
-        price: prices[pair.from] && prices[pair.from][pair.to],
+        price,
+        delta: price - lastPrice,
       };
     });
   }
@@ -126,6 +131,7 @@ class AppState {
       .getPrices(this.fromAll, this.toAll)
       .then(
         action((prices: any) => {
+          this.lastPrices = this.prices;
           this.prices = prices;
         })
       )
