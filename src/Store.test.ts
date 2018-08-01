@@ -164,4 +164,15 @@ describe('Store', () => {
     // id doesn't exist
     expect(store.amountById(12)).toBe('');
   });
+
+  it('moves pair from 1st position to 2nd', () => {
+    store.pairs = pairs;
+    expect(store.pairs[0].id).toBe(0);
+    expect(store.pairs[1].id).toBe(1);
+    const source = { index: 0 };
+    const destination = { index: 1 };
+    store.movePair(source, destination);
+    expect(store.pairs[0].id).toBe(1);
+    expect(store.pairs[1].id).toBe(0);
+  });
 });
