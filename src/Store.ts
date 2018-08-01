@@ -104,6 +104,13 @@ class AppState {
     this.pairs.splice(idx, 1);
   };
 
+  @action
+  movePair = (source: any, destination: any): void => {
+    const moved = this.pairs[source.index];
+    this.pairs.splice(source.index, 1);
+    this.pairs.splice(destination.index, 0, moved);
+  };
+
   fetchData = (from: string, to: string) => {
     const { addPair, getPrices, hasPair } = this;
 
