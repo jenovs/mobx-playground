@@ -4,7 +4,12 @@ import { Draggable } from 'react-beautiful-dnd';
 
 import NumInput from './NumInput';
 
-import { CardWrapper } from './styled';
+import {
+  CardWrapper,
+  DeltaWrapper,
+  InputWrapper,
+  TotalWrapper,
+} from './styled';
 
 const style = {
   numInput: {
@@ -28,12 +33,14 @@ const Card = inject('data')(
             {...provided.dragHandleProps}
             data-testid="card"
           >
-        <div style={style.numInput}>
+            <InputWrapper>
           <NumInput id={id as number} /> {from}
-        </div>
-        <div>
+            </InputWrapper>
+            <TotalWrapper>
           {formatTotal(total)} {to}
-        </div>
+            </TotalWrapper>
+            <DeltaWrapper color={color}>
+            </DeltaWrapper>
         <button onClick={() => data.deletePair(id)}>Delete</button>
           </CardWrapper>
         )}
