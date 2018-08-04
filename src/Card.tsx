@@ -11,18 +11,12 @@ import {
   TotalWrapper,
 } from './styled';
 
-const style = {
-  numInput: {
-    display: 'flex',
-  },
-};
+import { formatDelta, formatTotal, getColor } from './utils';
 
 const Card = inject('data')(
   observer(({ amount, data, delta, id, index, from, to, price }) => {
     const total = price * (amount === undefined ? 1 : amount);
-    const formatTotal = (t: number) => {
-      return t >= 1 ? t.toFixed(2) : t > 0 ? t : '...';
-    };
+    const color = getColor(delta, price);
 
     return (
       <Draggable draggableId={`${id}`} index={index}>
@@ -34,14 +28,16 @@ const Card = inject('data')(
             data-testid="card"
           >
             <InputWrapper>
-          <NumInput id={id as number} /> {from}
+              <NumInput id={id as number} /> {from}
             </InputWrapper>
             <TotalWrapper>
-          {formatTotal(total)} {to}
+              {formatTotal(total)} {to}
             </TotalWrapper>
             <DeltaWrapper color={color}>
+              {!!delta && delta > 0 && '+'}
+              {!!delta && formatDelta(delta * amount) + ` ${to}`}
             </DeltaWrapper>
-        <button onClick={() => data.deletePair(id)}>Delete</button>
+            <button onClick={() => data.deletePair(id)}>Delete</button>
           </CardWrapper>
         )}
       </Draggable>
