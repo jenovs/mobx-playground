@@ -30,7 +30,7 @@ const Card = inject('data')(
             <InputWrapper>
               <NumInput id={id as number} /> {from}
             </InputWrapper>
-            <TotalWrapper>
+            <TotalWrapper color={color}>
               {formatTotal(total)} {to}
             </TotalWrapper>
             <DeltaWrapper color={color}>
