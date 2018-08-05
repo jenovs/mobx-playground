@@ -16,6 +16,12 @@ class MockApi {
   checkError(f: any) {
     return f;
   }
+  saveData() {
+    return;
+  }
+  loadData() {
+    return pairs;
+  }
 }
 
 const pairs: IPairs[] = [
