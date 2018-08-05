@@ -13,7 +13,13 @@ export const formatTotal = (t: number) => {
 };
 
 export const formatDelta = (n: number): string => {
-  return n.toFixed(8).replace(/0*$/, '');
+  if (!n) {
+    return '';
+  }
+
+  const isWhole = Math.floor(n) === n;
+
+  return isWhole ? n.toFixed(2) : n.toFixed(8).replace(/0*$/, '');
 };
 
 export const getColor = (delta: number, price: number): DeltaColor => {
