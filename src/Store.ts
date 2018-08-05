@@ -1,6 +1,7 @@
 import { action, computed, configure, observable } from 'mobx';
 
 import Api from './api';
+import { initialPairs } from './initialPairs';
 
 configure({
   enforceActions: true,
@@ -18,13 +19,8 @@ export interface IPairs {
 
 class AppState {
   api: any;
+  @observable pairs: IPairs[];
   id = 2;
-  @observable
-  pairs: IPairs[] = [
-    { id: 0, from: 'BTC', to: 'EUR', amount: '5.236' },
-    { id: 1, from: 'LTC', to: 'EUR', amount: '66.98523' },
-    { id: 42, from: 'ETH', to: 'USD', amount: '1' },
-  ];
   @observable prices = {};
   @observable lastPrices = {};
   refreshToken = setTimeout(() => {
@@ -33,6 +29,7 @@ class AppState {
 
   constructor(api = new Api()) {
     this.api = api;
+    this.pairs = api.loadData() || initialPairs;
   }
 
   @computed
@@ -84,6 +81,7 @@ class AppState {
     }
 
     this.pairs[idx].amount = amount;
+    this.api.saveData(this.pairs);
   };
 
   @action
@@ -94,6 +92,7 @@ class AppState {
       to: to.trim().toUpperCase(),
       amount: '1',
     });
+    this.api.saveData(this.pairs);
   };
 
   @action
@@ -103,6 +102,7 @@ class AppState {
       return;
     }
     this.pairs.splice(idx, 1);
+    this.api.saveData(this.pairs);
   };
 
   @action
@@ -110,6 +110,7 @@ class AppState {
     const moved = this.pairs[source.index];
     this.pairs.splice(source.index, 1);
     this.pairs.splice(destination.index, 0, moved);
+    this.api.saveData(this.pairs);
   };
 
   fetchData = (from: string, to: string) => {
