@@ -1,3 +1,5 @@
+import { IPairs } from '../Store';
+
 export default class Api {
   baseUrl = `https://min-api.cryptocompare.com/data/`;
 
@@ -36,5 +38,14 @@ export default class Api {
       throw json.Message || 'Fetching error';
     }
     return json;
+  }
+
+  saveData(json: any): void {
+    localStorage.setItem('pairs', JSON.stringify(json));
+  }
+
+  loadData(): IPairs[] | null {
+    const data = localStorage.getItem('pairs');
+    return data && JSON.parse(data);
   }
 }
