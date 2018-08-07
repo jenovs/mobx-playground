@@ -2,6 +2,7 @@ import { action, computed, configure, observable } from 'mobx';
 
 import Api from './api';
 import { initialPairs } from './initialPairs';
+import { getNextId } from './utils';
 
 configure({
   enforceActions: true,
@@ -20,7 +21,7 @@ export interface IPairs {
 class AppState {
   api: any;
   @observable pairs: IPairs[];
-  id = 2;
+  id: number;
   @observable prices = {};
   @observable lastPrices = {};
   refreshToken = setTimeout(() => {
@@ -30,6 +31,7 @@ class AppState {
   constructor(api = new Api()) {
     this.api = api;
     this.pairs = api.loadData() || initialPairs;
+    this.id = getNextId(this.pairs);
   }
 
   @computed
