@@ -24,6 +24,8 @@ class AppState {
   id: number;
   @observable prices = {};
   @observable lastPrices = {};
+  @observable lastUpdateTime = new Date().getTime();
+  @observable secondsSinceUpdate = 0;
   refreshToken = setTimeout(() => {
     this.getPrices();
   }, REFRESH_TIMEOUT);
@@ -32,6 +34,15 @@ class AppState {
     this.api = api;
     this.pairs = api.loadData() || initialPairs;
     this.id = getNextId(this.pairs);
+
+    window.setInterval(
+      action(() => {
+        this.secondsSinceUpdate = Math.floor(
+          (new Date().getTime() - this.lastUpdateTime) / 1000
+        );
+      }),
+      1000
+    );
   }
 
   @computed
@@ -144,6 +155,7 @@ class AppState {
         action((prices: any) => {
           this.lastPrices = this.prices;
           this.prices = prices;
+          this.lastUpdateTime = new Date().getTime();
         })
       )
       .catch((err: any) => {
