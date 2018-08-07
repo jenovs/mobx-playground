@@ -1,3 +1,5 @@
+import { IPairs } from './Store';
+
 enum DeltaColor {
   negative = 'red',
   positive = 'green',
@@ -29,3 +31,11 @@ export const getColor = (delta: number, price: number): DeltaColor => {
 
   return delta > 0 ? DeltaColor.positive : DeltaColor.negative;
 };
+
+export const getNextId = (pairs: IPairs[]) =>
+  pairs.reduce((max, p) => {
+    if (p.id >= max) {
+      max = p.id + 1;
+    }
+    return max;
+  }, 0);

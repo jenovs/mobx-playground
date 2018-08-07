@@ -1,4 +1,5 @@
-import { formatDelta, formatTotal, getColor } from './utils';
+import { IPairs } from './Store';
+import { formatDelta, formatTotal, getColor, getNextId } from './utils';
 
 describe('utils', () => {
   describe('formatDelta', () => {
@@ -57,6 +58,33 @@ describe('utils', () => {
       const price = 42;
 
       expect(getColor(delta, price)).toBe('red');
+    });
+  });
+
+  describe('getNextId', () => {
+    it('gets next id', () => {
+      const pairs: IPairs[] = [
+        {
+          id: 1,
+          from: '',
+          to: '',
+          amount: '',
+        },
+        {
+          id: 66,
+          from: '',
+          to: '',
+          amount: '',
+        },
+      ];
+
+      expect(getNextId(pairs)).toBe(67);
+    });
+
+    it('gets 0 if empty array', () => {
+      const pairs: IPairs[] = [];
+
+      expect(getNextId(pairs)).toBe(0);
     });
   });
 });
