@@ -6,6 +6,7 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
 import Card from './Card';
 import StatusBar from './StatusBar';
+import { Wrapper } from './styled';
 
 const isDevelopment = process.env.NODE_ENV === 'development';
 
@@ -77,7 +78,7 @@ class App extends Component<any, any> {
     const { priceData } = this.props.data;
 
     return (
-      <div style={{ margin: 'auto', maxWidth: '768px' }}>
+      <Wrapper>
         {isDevelopment && <Devtools />}
         <StatusBar />
         <DragDropContext onDragEnd={this.handleDragEnd}>
@@ -117,7 +118,7 @@ class App extends Component<any, any> {
             </form>
           </div>
         </DragDropContext>
-      </div>
+      </Wrapper>
     );
   }
 }

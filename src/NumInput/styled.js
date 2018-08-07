@@ -9,7 +9,7 @@ export const Input = styled.input`
   line-height: 20px;
   max-width: 12ch;
   padding: 6px 8px 4px;
-  text-align: center;
+  text-align: right;
 
   /* Remove number spinners on Firefox */
   -moz-appearance: textfield;
