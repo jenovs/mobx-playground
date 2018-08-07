@@ -17,6 +17,10 @@ describe('utils', () => {
     it('returns empty string if input is 0', () => {
       expect(formatDelta(0)).toBe('');
     });
+
+    it('returns empty string if input is < 0.000000001', () => {
+      expect(formatDelta(0.000000001)).toBe('');
+    });
   });
 
   describe('formatTotal', () => {

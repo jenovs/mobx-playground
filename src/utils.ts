@@ -15,7 +15,7 @@ export const formatTotal = (t: number) => {
 };
 
 export const formatDelta = (n: number): string => {
-  if (!n) {
+  if (!n || Math.abs(n) < 0.00000001) {
     return '';
   }
 
