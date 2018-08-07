@@ -1,7 +1,9 @@
 import React, { Component, FormEvent } from 'react';
 import { inject, observer } from 'mobx-react';
 import { observable, action } from 'mobx';
-import Store from './Store';
+
+import Store from '../Store';
+import { Input, Wrapper } from './styled';
 
 interface IProps {
   data?: Store;
@@ -15,8 +17,12 @@ class NumInput extends Component<IProps, {}> {
   @observable inputVal = this.amount;
 
   @action
-  handleChange = (e: FormEvent) => {
+  handleChange = (e: FormEvent): void => {
     const { data, id } = this.props;
+
+    if ((e.target as HTMLInputElement).value.length > 10) {
+      return;
+    }
 
     this.inputVal = (e.target as HTMLInputElement).value;
 
@@ -52,8 +58,8 @@ class NumInput extends Component<IProps, {}> {
     const { amount, handleBlur, handleChange, handleSubmit } = this;
 
     return (
-      <form onSubmit={handleSubmit} noValidate={true}>
-        <input
+      <Wrapper onSubmit={handleSubmit} noValidate={true}>
+        <Input
           data-testid="num-input"
           type="number"
           value={amount}
@@ -61,7 +67,7 @@ class NumInput extends Component<IProps, {}> {
           onChange={handleChange}
           onBlur={handleBlur}
         />
-      </form>
+      </Wrapper>
     );
   }
 }
