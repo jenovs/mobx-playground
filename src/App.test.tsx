@@ -53,12 +53,20 @@ describe('App component', () => {
   });
 
   it('fetches data on mount', () => {
-    render(<App data={store} />);
+    render(
+      <Provider data={store}>
+        <App />
+      </Provider>
+    );
     expect(store.getPrices).toHaveBeenCalled();
   });
 
   it('calls fetchData with args from inputs when submitting form', async () => {
-    const { getByTestId, getByText } = render(<App data={store} />);
+    const { getByTestId, getByText } = render(
+      <Provider data={store}>
+        <App />
+      </Provider>
+    );
 
     const input1 = getByTestId('input-1') as HTMLInputElement;
     const input2 = getByTestId('input-2') as HTMLInputElement;
