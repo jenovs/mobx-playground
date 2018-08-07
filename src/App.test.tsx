@@ -93,7 +93,7 @@ describe('App component', () => {
     );
 
     expect(getAllByTestId('card')).toHaveLength(1);
-    fireEvent.click(getByText('Delete'));
+    fireEvent.click(getByText('x'));
     expect(store.deletePair).toBeCalledWith(12);
   });
 });
