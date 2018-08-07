@@ -5,6 +5,7 @@ import Devtools from 'mobx-react-devtools';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
 import Card from './Card';
+import StatusBar from './StatusBar';
 
 const isDevelopment = process.env.NODE_ENV === 'development';
 
@@ -78,6 +79,7 @@ class App extends Component<any, any> {
     return (
       <div style={{ margin: 'auto', maxWidth: '768px' }}>
         {isDevelopment && <Devtools />}
+        <StatusBar />
         <DragDropContext onDragEnd={this.handleDragEnd}>
           <Droppable droppableId="cards">
             {provided => (
